@@ -132,30 +132,24 @@ var memberDB = {
             });
         });
     },
+
     getBoughtItem: function (id) {
-        return new Promise( ( resolve, reject ) => {
+        return new Promise((resolve, reject) => {
             var conn = db.getConnection();
             conn.connect(function (err) {
                 if (err) {
                     console.log(err);
                     conn.end();
                     return reject(err);
-                }
-                else {
-                    var sql = "SELECT i.SKU,i.NAME as 'ITEM_NAME',ic.RETAILPRICE,li.QUANTITY,sr.CREATEDDATE,f.IMAGEURL,sr.ID,"
-                        +" d.NAME, d.DELIVERY_ADDRESS, d.POSTAL_CODE, d.CONTACT"
-                        +" FROM itementity i,item_countryentity ic,lineitementity li,salesrecordentity sr,"
-                        +" salesrecordentity_lineitementity sl,furnitureentity f, deliverydetailsentity d"
-                        +" WHERE sr.MEMBER_ID=? AND d.SALERECORD_ID = sr.id AND i.ID=ic.ITEM_ID AND"
-                        +" ic.COUNTRY_ID=25 AND li.ITEM_ID=i.ID AND sr.ID=sl.SalesRecordEntity_ID AND"
-                        +" li.ID=sl.itemsPurchased_ID AND f.ID=i.ID";
+                } else {
+                    var sql = "SELECT i.SKU, i.NAME as 'ITEM_NAME', ic.RETAILPRICE, li.QUANTITY, sr.CREATEDDATE, f.IMAGEURL, sr.ID, d.NAME, d.DELIVERY_ADDRESS, d.POSTAL_CODE, d.CONTACT FROM itementity i, item_countryentity ic, lineitementity li, salesrecordentity sr, salesrecordentity_lineitementity sl, furnitureentity f, deliverydetailsentity d WHERE sr.MEMBER_ID=? AND d.SALERECORD_ID = sr.id AND i.ID=ic.ITEM_ID AND ic.COUNTRY_ID=25 AND li.ITEM_ID=i.ID AND sr.ID=sl.SalesRecordEntity_ID AND li.ID=sl.itemsPurchased_ID AND f.ID=i.ID";
                     conn.query(sql, [id], function (err, result) {
                         if (err) {
                             conn.end();
                             return reject(err);
                         } else {
                             var itemList = [];
-                            for(var i = 0; i < result.length; i++) {
+                            for (var i = 0; i < result.length; i++) {
                                 var boughtItems = new ShoppingCartLineItem();
                                 boughtItems.id = result[i].ID;
                                 boughtItems.sku = result[i].SKU;
@@ -178,6 +172,53 @@ var memberDB = {
             });
         });
     },
+
+    // getBoughtItem: function (id) {
+    //     return new Promise( ( resolve, reject ) => {
+    //         var conn = db.getConnection();
+    //         conn.connect(function (err) {
+    //             if (err) {
+    //                 console.log(err);
+    //                 conn.end();
+    //                 return reject(err);
+    //             }
+    //             else {
+    //                 var sql = "SELECT i.SKU,i.NAME as 'ITEM_NAME',ic.RETAILPRICE,li.QUANTITY,sr.CREATEDDATE,f.IMAGEURL,sr.ID,"
+    //                     +" d.NAME, d.DELIVERY_ADDRESS, d.POSTAL_CODE, d.CONTACT"
+    //                     +" FROM itementity i,item_countryentity ic,lineitementity li,salesrecordentity sr,"
+    //                     +" salesrecordentity_lineitementity sl,furnitureentity f, deliverydetailsentity d"
+    //                     +" WHERE sr.MEMBER_ID=? AND d.SALERECORD_ID = sr.id AND i.ID=ic.ITEM_ID AND"
+    //                     +" ic.COUNTRY_ID=25 AND li.ITEM_ID=i.ID AND sr.ID=sl.SalesRecordEntity_ID AND"
+    //                     +" li.ID=sl.itemsPurchased_ID AND f.ID=i.ID";
+    //                 conn.query(sql, [id], function (err, result) {
+    //                     if (err) {
+    //                         conn.end();
+    //                         return reject(err);
+    //                     } else {
+    //                         var itemList = [];
+    //                         for(var i = 0; i < result.length; i++) {
+    //                             var boughtItems = new ShoppingCartLineItem();
+    //                             boughtItems.id = result[i].ID;
+    //                             boughtItems.sku = result[i].SKU;
+    //                             boughtItems.itemName = result[i].ITEM_NAME;
+    //                             boughtItems.retailPrice = result[i].RETAILPRICE;
+    //                             boughtItems.quantity = result[i].QUANTITY;
+    //                             boughtItems.createddate = result[i].CREATEDDATE;
+    //                             boughtItems.imageUrl = result[i].IMAGEURL;
+    //                             boughtItems.customerName = result[i].NAME;
+    //                             boughtItems.address = result[i].DELIVERY_ADDRESS;
+    //                             boughtItems.postalCode = result[i].POSTAL_CODE;
+    //                             boughtItems.phone = result[i].CONTACT;
+    //                             itemList.push(boughtItems);
+    //                         }
+    //                         conn.end();
+    //                         return resolve(itemList);
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     });
+    // },
     checkMemberEmailExists: function (email) {
         return new Promise( ( resolve, reject ) => {
             var conn = db.getConnection();
