@@ -172,7 +172,7 @@
                 console.log(error);
             });
         }, false)
-        
+
 
         function addWorkDays(startDate, days) {
             var dow = startDate.getDay();
@@ -655,6 +655,20 @@
         </div>
     </div>
     </div>
+    <script>
+        // this code is meant to retrieve the properties from the member object in session storage
+        var memberString = sessionStorage.getItem('member');
+        var member = JSON.parse(memberString);
+        document.getElementById('name').placeholder = member.name;
+        document.getElementById('email').placeholder = member.email;
+        document.getElementById('phone').placeholder = member.phone;
+        document.getElementById('country').value = member.city;
+        document.getElementById('address').placeholder = member.address;
+        document.getElementById('securityQuestion').value = member.securityQuestion;
+        document.getElementById('securityAnswer').placeholder = member.securityAnswer;
+        document.getElementById('age').placeholder = member.age;
+        document.getElementById('income').placeholder = member.income;
+    </script>
     <script src="../footer.js"></script>
 </body>
 
