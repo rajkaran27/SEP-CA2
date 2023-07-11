@@ -65,7 +65,7 @@
                     for (var orderIndex = 0; orderIndex < orderIdList.length; orderIndex++) {
                         var orderId = orderIdList[orderIndex];
 
-                        htmlTxt += '<div class="col-md-12">';
+                        htmlTxt += '<div class="col-md-12" class="deliveryDetails">';
                         htmlTxt += '<h5>Order #' + (orderIndex + 1) + '</h5>';
 
                         var counter = 0;
@@ -88,14 +88,17 @@
                                     };
                                     var datePurchased = new Date(item.createddate).toLocaleTimeString('en-us', options);
                                     var deliveryDate = addWorkDays(new Date(item.createddate), 5);
-                                    orderHtmlTxt += '\
-              <h6>Date Purchased: ' + datePurchased + '</h6>\
-              <h6>Estimated Delivery Date: ' + deliveryDate + '</h6>\
-              <h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>\
-              <h6>Address: ' + item.address + '</h6>\
-              <h6>Postal Code: ' + item.postalCode + '</h6>\
-              <h6>Name: ' + item.customerName + '</h6>\
-              <h6>Contact Number: ' + item.phone + '</h6>';
+
+                                    // Update the placement of the details
+            //                         orderHtmlTxt += '\
+            //   <h6>Date Purchased: ' + datePurchased + '</h6>\
+            //   <h6>Estimated Delivery Date: ' + deliveryDate + '</h6>\
+            //   <h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>\
+            //   <h6>Address: ' + item.address + '</h6>\
+            //   <h6>Postal Code: ' + item.postalCode + '</h6>\
+            //   <h6>Name: ' + item.customerName + '</h6>\
+            //   <h6>Contact Number: ' + item.phone + '</h6>';
+
                                     counter++;
                                 }
 
@@ -136,6 +139,22 @@
 
                         finalPrice = 0;
 
+                        htmlTxt += '<div class="row">';
+                        htmlTxt += '<div class="col-md-12">';
+                        htmlTxt += '<div class="row featured-boxes">';
+                        htmlTxt += '<div class="col-md-12">';
+                        htmlTxt += '<h6>Date Purchased: ' + datePurchased + '</h6>';
+                        htmlTxt += '<h6>Estimated Delivery Date: ' + deliveryDate + '</h6>';
+                        htmlTxt += '<h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>';
+                        htmlTxt += '<h6>Address: ' + item.address + '</h6>';
+                        htmlTxt += '<h6>Postal Code: ' + item.postalCode + '</h6>';
+                        htmlTxt += '<h6>Name: ' + item.customerName + '</h6>';
+                        htmlTxt += '<h6>Contact Number: ' + item.phone + '</h6>';
+                        htmlTxt += '</div>';
+                        htmlTxt += '</div>';
+                        htmlTxt += '</div>';
+                        htmlTxt += '</div>';
+
                         htmlTxt += '\
                                     <div class="row">\
                                     <div class="col-md-12">\
@@ -173,7 +192,6 @@
             });
         }, false)
 
-
         function addWorkDays(startDate, days) {
             var dow = startDate.getDay();
             var daysToAdd = parseInt(days);
@@ -205,7 +223,7 @@
                     var memberData = {
                         id: member.id,
                         password: oldPassword
-                    };  
+                    };
 
                     await fetch(new Request('/api/verifyPassword',
                         {
