@@ -65,7 +65,7 @@
                     for (var orderIndex = 0; orderIndex < orderIdList.length; orderIndex++) {
                         var orderId = orderIdList[orderIndex];
 
-                        htmlTxt += '<div class="col-md-12">';
+                        htmlTxt += '<div class="col-md-12" class="deliveryDetails">';
                         htmlTxt += '<h5>Order #' + (orderIndex + 1) + '</h5>';
 
                         var counter = 0;
@@ -88,14 +88,17 @@
                                     };
                                     var datePurchased = new Date(item.createddate).toLocaleTimeString('en-us', options);
                                     var deliveryDate = addWorkDays(new Date(item.createddate), 5);
-                                    orderHtmlTxt += '\
-              <h6>Date Purchased: ' + datePurchased + '</h6>\
-              <h6>Estimated Delivery Date: ' + deliveryDate + '</h6>\
-              <h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>\
-              <h6>Address: ' + item.address + '</h6>\
-              <h6>Postal Code: ' + item.postalCode + '</h6>\
-              <h6>Name: ' + item.customerName + '</h6>\
-              <h6>Contact Number: ' + item.phone + '</h6>';
+
+                                    // Update the placement of the details
+                                    //                         orderHtmlTxt += '\
+                                    //   <h6>Date Purchased: ' + datePurchased + '</h6>\
+                                    //   <h6>Estimated Delivery Date: ' + deliveryDate + '</h6>\
+                                    //   <h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>\
+                                    //   <h6>Address: ' + item.address + '</h6>\
+                                    //   <h6>Postal Code: ' + item.postalCode + '</h6>\
+                                    //   <h6>Name: ' + item.customerName + '</h6>\
+                                    //   <h6>Contact Number: ' + item.phone + '</h6>';
+
                                     counter++;
                                 }
 
@@ -136,6 +139,22 @@
 
                         finalPrice = 0;
 
+                        htmlTxt += '<div class="row">';
+                        htmlTxt += '<div class="col-md-12">';
+                        htmlTxt += '<div class="row featured-boxes">';
+                        htmlTxt += '<div class="col-md-12">';
+                        htmlTxt += '<h6>Date Purchased: ' + datePurchased + '</h6>';
+                        htmlTxt += '<h6>Estimated Delivery Date: ' + deliveryDate + '</h6>';
+                        htmlTxt += '<h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>';
+                        htmlTxt += '<h6>Address: ' + item.address + '</h6>';
+                        htmlTxt += '<h6>Postal Code: ' + item.postalCode + '</h6>';
+                        htmlTxt += '<h6>Name: ' + item.customerName + '</h6>';
+                        htmlTxt += '<h6>Contact Number: ' + item.phone + '</h6>';
+                        htmlTxt += '</div>';
+                        htmlTxt += '</div>';
+                        htmlTxt += '</div>';
+                        htmlTxt += '</div>';
+
                         htmlTxt += '\
                                     <div class="row">\
                                     <div class="col-md-12">\
@@ -172,7 +191,6 @@
                 console.log(error);
             });
         }, false)
-        
 
         function addWorkDays(startDate, days) {
             var dow = startDate.getDay();
@@ -197,6 +215,7 @@
             var oldPassword = document.getElementById('oldPassword').value;
             var password = document.getElementById("password").value;
             var repassword = document.getElementById("repassword").value;
+            var setPassword = "";
             var ok = true;
             console.log(oldPassword)
             if (document.getElementById("profileForm").checkValidity()) {
@@ -240,7 +259,11 @@
                             console.log(error);
                         });
                 }
-
+                if (oldPassword == "") {
+                    setPassword = document.getElementById("oldPassword").value;
+                } else {
+                    setPassword = document.getElementById("password").value;
+                }
                 if (ok) {
                     var data = {
                         email: document.getElementById("email").value,
@@ -253,7 +276,7 @@
                         age: document.getElementById("age").value,
                         income: document.getElementById("income").value,
                         sla: document.getElementById("serviceLevelAgreement").checked ? 1 : 0,
-                        password: document.getElementById("password").value
+                        password: setPassword
                     };
 
                     fetch(new Request('/api/updateMember',
@@ -655,6 +678,21 @@
         </div>
     </div>
     </div>
+    <script>
+        // this code is meant to retrieve the properties from the member object in session storage
+        var memberString = sessionStorage.getItem('member');
+        var member = JSON.parse(memberString);
+        document.getElementById('name').value = member.name;
+        document.getElementById('email').value = member.email;
+        document.getElementById('phone').value = member.phone;
+        document.getElementById('country').value = member.city;
+        document.getElementById('address').value = member.address;
+        document.getElementById('securityQuestion').value = member.securityQuestion;
+        document.getElementById('securityAnswer').value = member.securityAnswer;
+        document.getElementById('serviceLevelAgreement').value = member.sla;
+        document.getElementById('age').value = member.age;
+        document.getElementById('income').value = member.income;
+    </script>
     <script src="../footer.js"></script>
 </body>
 
